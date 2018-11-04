@@ -2,6 +2,8 @@
 
 namespace Dannerz\LaravelApiTestingSuite\Traits;
 
+use Carbon\Carbon;
+
 trait FiltersDateColumns
 {
     protected $filterDateColumns = [
@@ -10,6 +12,14 @@ trait FiltersDateColumns
 
     protected $filterDateColumnsWithRange = [
         // date_column => isNullable : boolean
+    ];
+
+    protected $filterWhereNullTimestampColumns = [
+        // filter_name => timestamp_column : string
+    ];
+
+    protected $filterWhereNotNullTimestampColumns = [
+        // filter_name => timestamp_column : string
     ];
 
     /** @test */
@@ -75,6 +85,44 @@ trait FiltersDateColumns
             } else {
                 $this->assertEquals($models1->merge($models2)->merge($models3)->merge($models4)->fresh()->toArray(), $response->json('data'));
             }
+
+            $this->emptyResourceModelTable();
+        }
+    }
+
+    /** @test */
+    function filters_where_null_timestamp_columns()
+    {
+        foreach ($this->filterWhereNullTimestampColumns as $filterName => $timestampColumn) {
+
+            $models = factory($this->resourceModelFullClassName, 10)->create([$timestampColumn => null]);
+            factory($this->resourceModelFullClassName, 5)->create([$timestampColumn => Carbon::now()]);
+
+            $queryString = '?filter['.$filterName.']';
+            $response = $this->callRoute($queryString);
+
+            $response->assertStatus(200)->assertJsonCount(10, 'data');
+
+            $this->assertEquals($models->fresh()->toArray(), $response->json('data'));
+
+            $this->emptyResourceModelTable();
+        }
+    }
+
+    /** @test */
+    function filters_where_not_null_timestamp_columns()
+    {
+        foreach ($this->filterWhereNotNullTimestampColumns as $filterName => $timestampColumn) {
+
+            $models = factory($this->resourceModelFullClassName, 10)->create([$timestampColumn => Carbon::now()]);
+            factory($this->resourceModelFullClassName, 5)->create([$timestampColumn => null]);
+
+            $queryString = '?filter['.$filterName.']';
+            $response = $this->callRoute($queryString);
+
+            $response->assertStatus(200)->assertJsonCount(10, 'data');
+
+            $this->assertEquals($models->fresh()->toArray(), $response->json('data'));
 
             $this->emptyResourceModelTable();
         }
