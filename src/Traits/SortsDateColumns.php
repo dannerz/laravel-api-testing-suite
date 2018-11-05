@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait SortsDateColumns
 {
-    protected $sortDateColumns = [];
+    protected $sortDateColumns = [
+        // date_column => isNullable : boolean
+    ];
 
     /** @test */
     function sorts_date_columns()
     {
-        foreach ($this->sortDateColumns as $dateColumn) {
+        foreach ($this->sortDateColumns as $dateColumn => $isNullable) {
 
             $model6 = factory($this->resourceModelFullClassName)->create([$dateColumn => '2016-10-11']);
             $model2 = factory($this->resourceModelFullClassName)->create([$dateColumn => '2016-09-09']);
-            $model1 = factory($this->resourceModelFullClassName)->create([$dateColumn => '2016-08-09']);
+            $model1 = factory($this->resourceModelFullClassName)->create([$dateColumn => $isNullable ? null : '2016-08-09']);
             $model8 = factory($this->resourceModelFullClassName)->create([$dateColumn => '2016-11-12']);
             $model3 = factory($this->resourceModelFullClassName)->create([$dateColumn => '2016-09-11']);
             $model7 = factory($this->resourceModelFullClassName)->create([$dateColumn => '2016-11-11']);
