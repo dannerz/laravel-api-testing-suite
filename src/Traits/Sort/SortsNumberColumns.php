@@ -1,6 +1,6 @@
 <?php
 
-namespace Dannerz\LaravelApiTestingSuite\Traits;
+namespace Dannerz\LaravelApiTestingSuite\Traits\Sort;
 
 use Illuminate\Database\Eloquent\Collection;
 
