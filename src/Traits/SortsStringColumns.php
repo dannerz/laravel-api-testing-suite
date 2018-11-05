@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait SortsStringColumns
 {
-    protected $sortStringColumns = [];
+    protected $sortStringColumns = [
+        // string_column => isNullable : boolean
+    ];
 
     /** @test */
     function sorts_string_columns()
     {
-        foreach ($this->sortStringColumns as $stringColumn) {
+        foreach ($this->sortStringColumns as $stringColumn => $isNullable) {
 
             $model6 = factory($this->resourceModelFullClassName)->create([$stringColumn => 'Aaf']);
             $model2 = factory($this->resourceModelFullClassName)->create([$stringColumn => 'Aab']);
-            $model1 = factory($this->resourceModelFullClassName)->create([$stringColumn => 'Aaa']);
+            $model1 = factory($this->resourceModelFullClassName)->create([$stringColumn => $isNullable ? null : 'Aaa']);
             $model8 = factory($this->resourceModelFullClassName)->create([$stringColumn => 'Aah']);
             $model3 = factory($this->resourceModelFullClassName)->create([$stringColumn => 'Aac']);
             $model7 = factory($this->resourceModelFullClassName)->create([$stringColumn => 'Aag']);
