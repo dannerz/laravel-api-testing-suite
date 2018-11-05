@@ -32,7 +32,7 @@ abstract class UpdateModelActionTest extends ActionTest
     /** @test */
     function updates_and_returns_data()
     {
-        $model = factory($this->resourceModelFullClassName)->persist($this->originalAttributes);
+        $model = factory($this->resourceModelFullClassName)->create($this->originalAttributes);
         $attributes = factory($this->resourceModelFullClassName, $this->factoryName)->raw($this->dirtyAttributes);
 
         $response = $this->callRoute($model->getKey(), $attributes);
