@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait SortsNumberColumns
 {
-    protected $sortNumberColumns = [];
+    protected $sortNumberColumns = [
+        // number_column => isNullable : boolean
+    ];
 
     /** @test */
     function sorts_number_columns()
     {
-        foreach ($this->sortNumberColumns as $numberColumn) {
+        foreach ($this->sortNumberColumns as $numberColumn => $isNullable) {
 
             $model6 = factory($this->resourceModelFullClassName)->create([$numberColumn => 116]);
             $model2 = factory($this->resourceModelFullClassName)->create([$numberColumn => 112]);
-            $model1 = factory($this->resourceModelFullClassName)->create([$numberColumn => 111]);
+            $model1 = factory($this->resourceModelFullClassName)->create([$numberColumn => $isNullable ? null : 111]);
             $model8 = factory($this->resourceModelFullClassName)->create([$numberColumn => 118]);
             $model3 = factory($this->resourceModelFullClassName)->create([$numberColumn => 113]);
             $model7 = factory($this->resourceModelFullClassName)->create([$numberColumn => 117]);
