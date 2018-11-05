@@ -1,0 +1,22 @@
+{
+    "name": "dannerz/laravel-api-testing-suite",
+    "description": "A package for quick and easy API testing",
+    "license": "None",
+    "authors": [
+        {
+            "name": "Daniel Jones",
+            "email": "danny@sotamedia.co.uk"
+        }
+    ],
+    "homepage": "https://github.com/dannerz/laravel-api-testing-suite",
+    "require": {
+        "laravel/framework": "5.6.*",
+        "php": "^7.1",
+        "phpunit/phpunit": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dannerz\\LaravelApiTestingSuite\\": "src/"
+        }
+    }
+}
