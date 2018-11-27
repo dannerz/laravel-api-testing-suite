@@ -24,6 +24,10 @@ abstract class DeleteModelActionTest extends ActionTest
         // relationship => softDeletes : boolean
     ];
 
+    protected $cascadePivotRelationships = [
+        // relationship
+    ];
+
     protected function setUp()
     {
         $childTestClassName = array_last(explode('\\', get_class(new static())));
@@ -60,7 +64,7 @@ abstract class DeleteModelActionTest extends ActionTest
 
             $model = factory($this->resourceModelFullClassName)->create($this->attributes);
             $relatedModel = factory(get_class($query->getRelated()))->create([
-                $query->getForeignKey() => $model->getKey(),
+                $query->getForeignKeyName() => $model->getKey(),
             ]);
 
             $response = $this->callRoute($model->getKey());
@@ -103,7 +107,7 @@ abstract class DeleteModelActionTest extends ActionTest
 
             $model = factory($this->resourceModelFullClassName)->create($this->attributes);
             $relatedModels = factory(get_class($query->getRelated()), 2)->create([
-                $query->getForeignKey() => $model->getKey(),
+                $query->getForeignKeyName() => $model->getKey(),
             ]);
 
             $response = $this->callRoute($model->getKey());
@@ -116,6 +120,33 @@ abstract class DeleteModelActionTest extends ActionTest
                 } else {
                     $this->assertDatabaseMissing($relatedModel->getTable(), [$relatedModel->getKeyName() => $relatedModel->getKey()]);
                 }
+            }
+
+            $response->assertStatus(200)->assertExactJson([]);
+        }
+    }
+
+    /** @test */
+    function cascades_pivot_relationships()
+    {
+        foreach ($this->cascadePivotRelationships as $relationship) {
+
+            $query = $this->resourceModel->$relationship();
+
+            $model = factory($this->resourceModelFullClassName)->create($this->attributes);
+            $relatedModels = factory(get_class($query->getRelated()), 2)->create();
+            $model->$relationship()->attach($relatedModels);
+
+            $response = $this->callRoute($model->getKey());
+
+            $this->assertCount(0, $model->$relationship()->get());
+
+            foreach ($relatedModels as $relatedModel) {
+
+                $this->assertDatabaseMissing($query->getTable(), [
+                    $model->getForeignKey() => $model->getKey(),
+                    $relatedModel->getForeignKey() => $relatedModel->getKey(),
+                ]);
             }
 
             $response->assertStatus(200)->assertExactJson([]);
