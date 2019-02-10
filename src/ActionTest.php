@@ -64,7 +64,7 @@ abstract class ActionTest extends TestCase
 
     protected function assertDatabaseHas($table, array $data, $connection = null)
     {
-        // Convert JSON values into an expression.
+        // Parse JSON values.
         foreach ($data as $property => $value) {
             if (is_string($value)) {
                 $value = json_decode($value);
