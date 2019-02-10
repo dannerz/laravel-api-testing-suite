@@ -61,4 +61,20 @@ abstract class ActionTest extends TestCase
             DB::table($this->resourceModel->getTable())->delete();
         }
     }
+
+    protected function assertDatabaseHas($table, array $data, $connection = null)
+    {
+        // Convert JSON values into an expression.
+        foreach ($data as $property => $value) {
+            if (is_string($value)) {
+                $value = json_decode($value);
+            }
+            if (is_array($value) || is_object($value)) {
+                $json = json_encode($value);
+                $data[$property] = DB::raw("CAST('{$json}' AS JSON)");
+            }
+        }
+
+        return parent::assertDatabaseHas($table, $data, $connection);
+    }
 }
