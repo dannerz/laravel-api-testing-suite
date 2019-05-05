@@ -14,7 +14,7 @@ abstract class CreateModelActionTest extends ActionTest
 
     protected $defaultAttributes = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $childTestClassName = array_last(explode('\\', get_class(new static())));
         $resourceModelClassName = str_replace(['Create', 'ActionTest'], '', $childTestClassName);
