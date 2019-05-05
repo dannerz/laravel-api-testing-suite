@@ -26,7 +26,7 @@ abstract class ActionTest extends TestCase
 
     protected $resourceModel;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if ($this->resourceModelClassName) {
             $this->resourceModelFullClassName = $this->modelNamespace.'\\'.$this->resourceModelClassName;
