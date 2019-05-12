@@ -12,7 +12,9 @@ abstract class CreateModelActionTest extends ActionTest
 
     protected $attributes = [];
 
-    protected function setUp()
+    protected $defaultAttributes = [];
+
+    protected function setUp(): void
     {
         $childTestClassName = array_last(explode('\\', get_class(new static())));
         $resourceModelClassName = str_replace(['Create', 'ActionTest'], '', $childTestClassName);
@@ -31,6 +33,8 @@ abstract class CreateModelActionTest extends ActionTest
         $response = $this->callRouteWithoutPath($attributes);
 
         $key = $response->json('data.'.$this->resourceModel->getKeyName());
+
+        $attributes = array_merge($attributes, $this->defaultAttributes);
 
         $this->assertDatabaseHas($this->resourceModel->getTable(), array_add(
             $attributes, $this->resourceModel->getKeyName(), $key

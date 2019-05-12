@@ -28,7 +28,7 @@ abstract class DeleteModelActionTest extends ActionTest
         // relationship
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $childTestClassName = array_last(explode('\\', get_class(new static())));
         $resourceModelClassName = str_replace(['Delete', 'ActionTest'], '', $childTestClassName);
@@ -107,7 +107,7 @@ abstract class DeleteModelActionTest extends ActionTest
 
             $model = factory($this->resourceModelFullClassName)->create($this->attributes);
             $relatedModels = factory(get_class($query->getRelated()), 2)->create([
-                $query->getForeignKey() => $model->getKey(),
+                $query->getForeignKeyName() => $model->getKey(),
             ]);
 
             $response = $this->callRoute($model->getKey());

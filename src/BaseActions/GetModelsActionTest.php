@@ -13,7 +13,7 @@ abstract class GetModelsActionTest extends ActionTest
 
     protected $method = 'GET';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $childTestClassName = array_last(explode('\\', get_class(new static())));
         $resourceModelClassName = str_replace(['Get', 'ActionTest'], '', $childTestClassName);

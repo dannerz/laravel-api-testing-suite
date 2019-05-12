@@ -18,7 +18,7 @@ abstract class UpdateModelActionTest extends ActionTest
         // relationship
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $childTestClassName = array_last(explode('\\', get_class(new static())));
         $resourceModelClassName = str_replace(['Update', 'ActionTest'], '', $childTestClassName);
@@ -37,9 +37,7 @@ abstract class UpdateModelActionTest extends ActionTest
 
         $response = $this->callRoute($model->getKey(), $attributes);
 
-        $newAttributes = array_merge($model->getAttributes(), $attributes);
-
-        $this->assertDatabaseHas($model->getTable(), $newAttributes);
+        $this->assertDatabaseHas($model->getTable(), $attributes);
         $this->assertDatabaseMissing($model->getTable(), $model->getAttributes());
 
         $response

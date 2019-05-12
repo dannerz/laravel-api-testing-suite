@@ -15,14 +15,14 @@ trait SortsNumberColumns
     {
         foreach ($this->sortNumberColumns as $numberColumn => $isNullable) {
 
-            $model6 = factory($this->resourceModelFullClassName)->create([$numberColumn => 116]);
-            $model2 = factory($this->resourceModelFullClassName)->create([$numberColumn => 112]);
-            $model1 = factory($this->resourceModelFullClassName)->create([$numberColumn => $isNullable ? null : 111]);
-            $model8 = factory($this->resourceModelFullClassName)->create([$numberColumn => 118]);
-            $model3 = factory($this->resourceModelFullClassName)->create([$numberColumn => 113]);
-            $model7 = factory($this->resourceModelFullClassName)->create([$numberColumn => 117]);
-            $model4 = factory($this->resourceModelFullClassName)->create([$numberColumn => 114]);
-            $model5 = factory($this->resourceModelFullClassName)->create([$numberColumn => 115]);
+            $model6 = factory($this->resourceModelFullClassName)->create([$numberColumn => 6]);
+            $model2 = factory($this->resourceModelFullClassName)->create([$numberColumn => 2]);
+            $model1 = factory($this->resourceModelFullClassName)->create([$numberColumn => $isNullable ? null : 1]);
+            $model8 = factory($this->resourceModelFullClassName)->create([$numberColumn => 8]);
+            $model3 = factory($this->resourceModelFullClassName)->create([$numberColumn => 3]);
+            $model7 = factory($this->resourceModelFullClassName)->create([$numberColumn => 7]);
+            $model4 = factory($this->resourceModelFullClassName)->create([$numberColumn => 4]);
+            $model5 = factory($this->resourceModelFullClassName)->create([$numberColumn => 5]);
 
             // Asc.
             $queryString = '?sort='.$numberColumn;

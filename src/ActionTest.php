@@ -26,7 +26,7 @@ abstract class ActionTest extends TestCase
 
     protected $resourceModel;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if ($this->resourceModelClassName) {
             $this->resourceModelFullClassName = $this->modelNamespace.'\\'.$this->resourceModelClassName;
@@ -60,5 +60,21 @@ abstract class ActionTest extends TestCase
         if ($this->resourceModel) {
             DB::table($this->resourceModel->getTable())->delete();
         }
+    }
+
+    protected function assertDatabaseHas($table, array $data, $connection = null)
+    {
+        // Parse JSON values.
+        foreach ($data as $property => $value) {
+            if (is_string($value)) {
+                $value = json_decode($value);
+            }
+            if (is_array($value) || is_object($value)) {
+                $json = json_encode($value);
+                $data[$property] = DB::raw("CAST('{$json}' AS JSON)");
+            }
+        }
+
+        return parent::assertDatabaseHas($table, $data, $connection);
     }
 }
